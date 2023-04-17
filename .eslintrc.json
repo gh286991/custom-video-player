@@ -35,6 +35,7 @@
     "@typescript-eslint/indent": [2, 2],
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",
+    "no-multiple-empty-lines": ["error", { "max": 1, "maxEOF": 1, "maxBOF": 0 }],
     "import/extensions": 0
   },
   "env": {
