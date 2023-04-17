@@ -4,6 +4,7 @@ import { drawAdvertisement } from './Advertisement';
 
 interface IMarqueeCanvasProps {
   videoRef: React.RefObject<HTMLVideoElement>;
+  containerRef: React.RefObject<HTMLDivElement>;
   text: string;
   speed?: number;
   fontSize?: number;
@@ -12,10 +13,12 @@ interface IMarqueeCanvasProps {
   adText?: string;
   adWidth?: number;
   adHeight?: number;
+  isExpanded?: boolean;
 }
 
 const MarqueeCanvas: React.FC<IMarqueeCanvasProps> = ({
   videoRef,
+  containerRef,
   text,
   speed = 2,
   fontSize = 20,
@@ -24,23 +27,25 @@ const MarqueeCanvas: React.FC<IMarqueeCanvasProps> = ({
   adText = 'Advertisement',
   adWidth = 150,
   adHeight = 50,
+  isExpanded = false,
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     const video = videoRef.current;
-    if (!canvas || !video) return;
-
-    canvas.width = video.clientWidth;
-    canvas.height = video.clientHeight;
+    const container = containerRef.current;
+    if (!canvas || !video || !container) return;
+    
+    canvas.width = container.clientWidth;
+    canvas.height = container.clientHeight;
 
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
     const updateCanvasSize = () => {
-      canvas.width = video.clientWidth;
-      canvas.height = video.clientHeight;
+      canvas.width = container.clientWidth;
+      canvas.height = container.clientHeight;
     };
 
     let requestID: number;
@@ -63,19 +68,20 @@ const MarqueeCanvas: React.FC<IMarqueeCanvasProps> = ({
     };
 
     draw();
-
     updateCanvasSize();
+
     window.addEventListener('resize', updateCanvasSize);
+    container.addEventListener('resize', updateCanvasSize);
 
     return () => {
       cancelAnimationFrame(requestID);
       window.removeEventListener('resize', updateCanvasSize);
+      container.removeEventListener('resize', updateCanvasSize);
     };
-  }, [videoRef, text, speed, fontSize, fontColor, backgroundColor, adText, adWidth, adHeight]);
+  }, [videoRef, containerRef, text, speed, fontSize, fontColor, backgroundColor, adText, adWidth, adHeight, isExpanded]);
 
   return (
-    <canvas ref={canvasRef}  style={{ position: 'absolute', zIndex: 2,  top: '0px', left: '0px', pointerEvents: 'none' }} />
-
+    <canvas ref={canvasRef} style={{ position: 'absolute', zIndex: 2, top: '0px', left: '0px', pointerEvents: 'none' }} />
   );
 };
 
