@@ -10,6 +10,7 @@
   "scripts": {
     "start": "webpack serve --mode development",
     "build": "webpack --mode production",
+    "lint": "eslint --ext .js,.jsx,.ts,.tsx src",
     "test": "jest"
   },
   "dependencies": {

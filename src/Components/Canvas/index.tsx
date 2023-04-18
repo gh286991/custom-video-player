@@ -16,7 +16,7 @@ interface IMarqueeCanvasProps {
   isExpanded?: boolean;
 }
 
-const MarqueeCanvas: React.FC<IMarqueeCanvasProps> = ({
+const CanvasContainer: React.FC<IMarqueeCanvasProps> = ({
   videoRef,
   containerRef,
   text,
@@ -81,8 +81,14 @@ const MarqueeCanvas: React.FC<IMarqueeCanvasProps> = ({
   }, [videoRef, containerRef, text, speed, fontSize, fontColor, backgroundColor, adText, adWidth, adHeight, isExpanded]);
 
   return (
-    <canvas ref={canvasRef} style={{ position: 'absolute', zIndex: 2, top: '0px', left: '0px', pointerEvents: 'none' }} />
+    <canvas ref={canvasRef}
+      style={{ position: 'absolute',
+        zIndex: 2,
+        top: '0px',
+        left: '0px',
+        pointerEvents: 'none' }}
+    />
   );
 };
 
-export default MarqueeCanvas;
+export default CanvasContainer;

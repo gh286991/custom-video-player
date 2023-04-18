@@ -19,7 +19,11 @@ const ProgressBar: React.FC<IProgressBarProps> = ({ progress, onProgressClick })
       }}
       onClick={onProgressClick}
     >
-      <div style={{ width: `${progress}%`, height: '100%', backgroundColor: 'blue' }} />
+      <div style={{ 
+        width: `${progress}%`,
+        height: '100%',
+        backgroundColor: 'blue' }}
+      />
     </div>
   );
 };

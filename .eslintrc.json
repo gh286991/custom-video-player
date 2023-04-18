@@ -36,7 +36,15 @@
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",
     "no-multiple-empty-lines": ["error", { "max": 1, "maxEOF": 1, "maxBOF": 0 }],
-    "import/extensions": 0
+    "import/extensions": 0,
+    "react/jsx-closing-bracket-location": ["error", "line-aligned"],
+    "max-len": [2, { "code": 140, "tabWidth": 2, "ignoreUrls": true }],
+    "object-property-newline": [2, { "allowAllPropertiesOnSameLine": false }],
+    "react/jsx-max-props-per-line": [
+      "error" , { 
+        "maximum": 1
+      }
+    ]
   },
   "env": {
     "jest/globals": true
