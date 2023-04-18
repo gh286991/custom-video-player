@@ -1,6 +1,7 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { drawMarquee } from './Marquee';
 import { drawAdvertisement } from './Advertisement';
+import { drawBarrages } from './Barrages';
 
 interface IMarqueeCanvasProps {
   videoRef: React.RefObject<HTMLVideoElement>;
@@ -14,6 +15,15 @@ interface IMarqueeCanvasProps {
   adWidth?: number;
   adHeight?: number;
   isExpanded?: boolean;
+}
+
+interface Barrage {
+  barrageText: string;
+  x: number;
+  y: number;
+  speed: number;
+  color: string;
+  fontSize: number;
 }
 
 const CanvasContainer: React.FC<IMarqueeCanvasProps> = ({
@@ -30,6 +40,23 @@ const CanvasContainer: React.FC<IMarqueeCanvasProps> = ({
   isExpanded = false,
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [barrages, setBarrages] = useState<Barrage[]>([]);
+  const [inputValue, setInputValue] = useState<string>('');
+
+  const addBarrage = (barrageText: string, color = 'red') => {
+    console.log('barrageText: ', barrageText);
+    setBarrages((prevBarrages) => [
+      ...prevBarrages,
+      {
+        barrageText,
+        x: canvasRef.current?.width || 0,
+        y: Math.random() * (canvasRef.current?.height || 0),
+        speed,
+        color,
+        fontSize,
+      },
+    ]);
+  };
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -61,13 +88,14 @@ const CanvasContainer: React.FC<IMarqueeCanvasProps> = ({
       if (x < -ctx.measureText(text).width) {
         x = canvas.width;
       }
-
+    
       drawAdvertisement(ctx, adText, adWidth, adHeight);
-
+      drawBarrages(ctx, barrages);
       requestID = requestAnimationFrame(draw);
     };
-
+   
     draw();
+
     updateCanvasSize();
 
     window.addEventListener('resize', updateCanvasSize);
@@ -78,16 +106,43 @@ const CanvasContainer: React.FC<IMarqueeCanvasProps> = ({
       window.removeEventListener('resize', updateCanvasSize);
       container.removeEventListener('resize', updateCanvasSize);
     };
-  }, [videoRef, containerRef, text, speed, fontSize, fontColor, backgroundColor, adText, adWidth, adHeight, isExpanded]);
+  }, [barrages, videoRef, containerRef, text, speed, fontSize, fontColor, backgroundColor, adText, adWidth, adHeight, isExpanded]);
 
   return (
-    <canvas ref={canvasRef}
-      style={{ position: 'absolute',
-        zIndex: 2,
-        top: '0px',
-        left: '0px',
-        pointerEvents: 'none' }}
-    />
+    <>
+      <canvas ref={canvasRef}
+        style={{ position: 'absolute',
+          zIndex: 2,
+          top: '0px',
+          left: '0px',
+          pointerEvents: 'none' }}
+      />
+      <input
+        style={{ position: 'absolute',
+          zIndex: 2,
+          bottom: '-100px',
+          left: '0px',
+        }}
+        value={inputValue}
+        onChange={(event)=> {
+          setInputValue(event.target.value);
+        }}
+        type='text'
+      ></input>
+      <button
+        style={{ position: 'absolute',
+          zIndex: 2,
+          bottom: '-100px',
+          left: '150px',
+        }}
+        onClick={() => {
+          addBarrage(inputValue);
+        }}
+      >
+        Send Barrage
+      </button>
+    </>
+
   );
 };
 
