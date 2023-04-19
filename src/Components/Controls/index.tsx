@@ -10,6 +10,7 @@ interface ControlsProps {
   setIsExpanded: React.Dispatch<React.SetStateAction<boolean>>;
   isExpanded: boolean;
   progress: number;
+  setIsFullScreen: React.Dispatch<React.SetStateAction<boolean>>;
 }
   
 const Controls: React.FC<ControlsProps> = ({
@@ -20,6 +21,7 @@ const Controls: React.FC<ControlsProps> = ({
   setIsExpanded,
   isExpanded,
   progress,
+  setIsFullScreen,
 }: ControlsProps) => {
   const handleProgressClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (videoRef.current) {
@@ -46,6 +48,7 @@ const Controls: React.FC<ControlsProps> = ({
   
   const handleFullscreen = () => {
     if (videoRef.current) {
+      setIsFullScreen(true);
       const videoElement = videoRef.current as HTMLVideoElement & {
         requestFullscreen?(): Promise<void>;
         webkitRequestFullscreen?(): Promise<void>;
@@ -71,6 +74,7 @@ const Controls: React.FC<ControlsProps> = ({
     const handleEsc = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         setIsExpanded(false);
+        setIsFullScreen(false);
       }
     };
   
@@ -80,7 +84,7 @@ const Controls: React.FC<ControlsProps> = ({
       document.removeEventListener('keydown', handleEsc);
     };
   };
-  
+
   return (
     <>
       <ProgressBar 

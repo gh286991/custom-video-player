@@ -13,6 +13,7 @@ const HLSPlayer: React.FC<IHLSPlayerProps> = ({ src }) => {
   const [progress, setProgress] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
+  const [isFullScreen, setIsFullScreen] = useState(false);
 
   useEffect(() => {
     if (videoRef.current) {
@@ -61,6 +62,16 @@ const HLSPlayer: React.FC<IHLSPlayerProps> = ({ src }) => {
       width: '640px',
       height: '480px' } ;
 
+  const toggleFullscreen = () => {
+    if (containerRef.current) {
+      if (!document.fullscreenElement) {
+        containerRef.current.requestFullscreen();
+      } else {
+        document.exitFullscreen();
+      }
+    }
+  };
+
   return (
     <div  
       ref={containerRef}
@@ -76,9 +87,11 @@ const HLSPlayer: React.FC<IHLSPlayerProps> = ({ src }) => {
         <source type="application/x-mpegURL" />
         您的浏览器不支持 HTML5 视频。
       </video>
-      <CanvasContainer containerRef={containerRef}
+      <CanvasContainer 
+        containerRef={containerRef}
         isExpanded={isExpanded}
         videoRef={videoRef}
+        isFullScreen={isFullScreen}
         text={'322323'}
       />
       <Controls
@@ -89,7 +102,19 @@ const HLSPlayer: React.FC<IHLSPlayerProps> = ({ src }) => {
         setIsExpanded={setIsExpanded}
         isExpanded={isExpanded}
         progress={progress}
+        setIsFullScreen={setIsFullScreen}
       />
+      <button 
+        style={{
+          position: 'absolute',
+          bottom: '-100px',
+          right:'10px'
+        }} 
+        onClick={toggleFullscreen}
+      >
+        Toggle Fullscreen
+      </button>
+
     </div>
   );
 };

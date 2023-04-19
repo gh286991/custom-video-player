@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { drawMarquee } from './Marquee';
 import { drawAdvertisement } from './Advertisement';
-import { drawBarrages } from './Barrages';
+import { Barrage, drawBarrages } from './Barrages';
 
 interface IMarqueeCanvasProps {
   videoRef: React.RefObject<HTMLVideoElement>;
@@ -15,15 +15,7 @@ interface IMarqueeCanvasProps {
   adWidth?: number;
   adHeight?: number;
   isExpanded?: boolean;
-}
-
-interface Barrage {
-  barrageText: string;
-  x: number;
-  y: number;
-  speed: number;
-  color: string;
-  fontSize: number;
+  isFullScreen?: boolean;
 }
 
 const CanvasContainer: React.FC<IMarqueeCanvasProps> = ({
@@ -38,6 +30,7 @@ const CanvasContainer: React.FC<IMarqueeCanvasProps> = ({
   adWidth = 150,
   adHeight = 50,
   isExpanded = false,
+  isFullScreen = false,
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [barrages, setBarrages] = useState<Barrage[]>([]);
@@ -107,6 +100,7 @@ const CanvasContainer: React.FC<IMarqueeCanvasProps> = ({
       container.removeEventListener('resize', updateCanvasSize);
     };
   }, [barrages, videoRef, containerRef, text, speed, fontSize, fontColor, backgroundColor, adText, adWidth, adHeight, isExpanded]);
+
 
   return (
     <>

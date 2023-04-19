@@ -1,5 +1,4 @@
-// 實作彈幕功能
-interface Barrage {
+export interface Barrage {
   barrageText: string;
   x: number;
   y: number;
