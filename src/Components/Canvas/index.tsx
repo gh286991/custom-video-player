@@ -43,7 +43,7 @@ const CanvasContainer: React.FC<IMarqueeCanvasProps> = ({
 
   useUpdateCanvasSize(canvas, video, container, isExpanded);
 
-  const { toggleBoxVisibility, isBoxVisible } = useDrawCanvas({
+  useDrawCanvas({
     barrages,
     canvas,
     video,
@@ -69,20 +69,6 @@ const CanvasContainer: React.FC<IMarqueeCanvasProps> = ({
           left: '0px',
           pointerEvents: 'none' }}
       />
-      {isBoxVisible && (
-        <button
-          onClick={toggleBoxVisibility}
-          style={{
-            position: 'absolute',
-            left: '50%',
-            top: '50%',
-            transform: 'translate(-50%, -50%)',
-            zIndex: 10, // 确保按钮位于 Canvas 之上
-          }}
-        >
-          确定
-        </button>
-      )}
       <input
         style={{ position: 'absolute',
           zIndex: 2,
