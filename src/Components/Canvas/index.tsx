@@ -36,7 +36,6 @@ const CanvasContainer: React.FC<IMarqueeCanvasProps> = ({
   const [inputValue, setInputValue] = useState<string>('');
   const { barrages, addBarrage } = useAddBarrage({ canvasRef,
     speed: 2 });
-
   const ctx = canvasRef.current?.getContext('2d');
   const canvas = canvasRef.current;
   const video = videoRef.current;
