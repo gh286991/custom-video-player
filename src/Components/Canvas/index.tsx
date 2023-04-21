@@ -37,48 +37,49 @@ const CanvasContainer: React.FC<IMarqueeCanvasProps> = ({
   const { barrages, addBarrage } = useAddBarrage({ canvasRef,
     speed: 2 });
     
+  const xRef = useRef(0);
+
   useEffect(() => {
     const canvas = canvasRef.current;
     const video = videoRef.current;
     const container = containerRef.current;
     if (!canvas || !video || !container) return;
-  
+    
     canvas.width = container.clientWidth;
     canvas.height = container.clientHeight;
-  
+    
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
-
+    
     const updateCanvasSize = () => {
       canvas.width = container.clientWidth;
       canvas.height = container.clientHeight;
     };
 
-    let x = canvas.width;
     let requestID: number;
     const draw = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-
+    
       ctx.fillStyle = backgroundColor;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      x = drawMarquee(ctx, x, 30, 'Test123', fontSize, fontColor, speed);
-      
-      if (x < -ctx.measureText(text).width) {
-        x = canvas.width;
+    
+      xRef.current = drawMarquee(ctx, xRef.current, 30, 'Test123', fontSize, fontColor, speed);
+    
+      if (xRef.current < -ctx.measureText(text).width) {
+        xRef.current = canvas.width;
       }
       drawAdvertisement(ctx, adText, adWidth, adHeight);
       drawBarrages(ctx, barrages);
       requestID = requestAnimationFrame(draw);
     };
-   
+    
     draw();
-
+    
     updateCanvasSize();
-  
+    
     window.addEventListener('resize', updateCanvasSize);
     container.addEventListener('resize', updateCanvasSize);
-  
+    
     return () => {
       cancelAnimationFrame(requestID);
       window.removeEventListener('resize', updateCanvasSize);
@@ -98,6 +99,7 @@ const CanvasContainer: React.FC<IMarqueeCanvasProps> = ({
     adHeight,
     isExpanded,
   ]);
+  
   return (
     <>
       <canvas ref={canvasRef}
