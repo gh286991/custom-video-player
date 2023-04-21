@@ -1,7 +1,8 @@
-import React, { useRef, useEffect, useState } from 'react';
-import { drawMarquee } from './Marquee';
-import { drawAdvertisement } from './Advertisement';
-import {  drawBarrages, useAddBarrage } from './Barrages';
+import React, { useRef, useState } from 'react';
+import useUpdateCanvasSize from './Hooks/useUpdateCanvasSize';
+import useDrawCanvas from './Hooks/useDrawCanvas';
+
+import { useAddBarrage } from './Modules';
 
 interface IMarqueeCanvasProps {
   videoRef: React.RefObject<HTMLVideoElement>;
@@ -25,70 +26,29 @@ const CanvasContainer: React.FC<IMarqueeCanvasProps> = ({
   speed = 2,
   fontSize = 20,
   fontColor = '#FFFFFF',
-  backgroundColor = 'rgba(0, 0, 0, 0.1)',
+  backgroundColor = 'rgba(0, 253, 0, 0.1)',
   adText = 'Advertisement',
   adWidth = 150,
   adHeight = 50,
   isExpanded = false,
-  isFullScreen = false,
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [inputValue, setInputValue] = useState<string>('');
   const { barrages, addBarrage } = useAddBarrage({ canvasRef,
     speed: 2 });
-    
-  const xRef = useRef(0);
+  
+  const ctx = canvasRef.current?.getContext('2d');
+  const canvas = canvasRef.current;
+  const video = videoRef.current;
+  const container = containerRef.current;
 
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    const video = videoRef.current;
-    const container = containerRef.current;
-    if (!canvas || !video || !container) return;
-    
-    canvas.width = container.clientWidth;
-    canvas.height = container.clientHeight;
-    
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-    
-    const updateCanvasSize = () => {
-      canvas.width = container.clientWidth;
-      canvas.height = container.clientHeight;
-    };
+  useUpdateCanvasSize(canvas, video, container, isExpanded);
 
-    let requestID: number;
-    const draw = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-    
-      ctx.fillStyle = backgroundColor;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-    
-      xRef.current = drawMarquee(ctx, xRef.current, 30, 'Test123', fontSize, fontColor, speed);
-    
-      if (xRef.current < -ctx.measureText(text).width) {
-        xRef.current = canvas.width;
-      }
-      drawAdvertisement(ctx, adText, adWidth, adHeight);
-      drawBarrages(ctx, barrages);
-      requestID = requestAnimationFrame(draw);
-    };
-    
-    draw();
-    
-    updateCanvasSize();
-    
-    window.addEventListener('resize', updateCanvasSize);
-    container.addEventListener('resize', updateCanvasSize);
-    
-    return () => {
-      cancelAnimationFrame(requestID);
-      window.removeEventListener('resize', updateCanvasSize);
-      container.removeEventListener('resize', updateCanvasSize);
-    };
-  }, [
+  useDrawCanvas({
     barrages,
-    videoRef,
-    containerRef,
+    canvas,
+    video,
+    container,
     text,
     speed,
     fontSize,
@@ -98,7 +58,8 @@ const CanvasContainer: React.FC<IMarqueeCanvasProps> = ({
     adWidth,
     adHeight,
     isExpanded,
-  ]);
+    ctx,
+  });
   
   return (
     <>

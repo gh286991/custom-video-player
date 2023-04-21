@@ -92,7 +92,7 @@ const HLSPlayer: React.FC<IHLSPlayerProps> = ({ src }) => {
         isExpanded={isExpanded}
         videoRef={videoRef}
         isFullScreen={isFullScreen}
-        text={'322323'}
+        text={'test343'}
       />
       <Controls
         videoRef={videoRef}
@@ -108,7 +108,7 @@ const HLSPlayer: React.FC<IHLSPlayerProps> = ({ src }) => {
         style={{
           position: 'absolute',
           bottom: '-100px',
-          right:'10px'
+          right:'10px',
         }} 
         onClick={toggleFullscreen}
       >

@@ -8,7 +8,7 @@ export type IDrawMarquee = (
   speed: number
 ) => number;
 
-export const drawMarquee :IDrawMarquee = (
+export const drawMarquee: IDrawMarquee = (
   ctx,
   x,
   y,
@@ -21,8 +21,13 @@ export const drawMarquee :IDrawMarquee = (
   ctx.fillStyle = fontColor;
   ctx.fillText(text, x, y);
 
-  // 更新跑馬燈的 x 座標
-  const updatedX = x - speed;
-  
+  // 更新跑马灯的 x 坐标
+  let updatedX = x - speed;
+
+  // 如果跑马灯文本已完全移出画布，则将 updatedX 重置为 canvas.width
+  if (updatedX < -ctx.measureText(text).width) {
+    updatedX = ctx.canvas.width;
+  }
+
   return updatedX;
 };
