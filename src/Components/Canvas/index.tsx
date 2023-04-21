@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { drawMarquee } from './Marquee';
 import { drawAdvertisement } from './Advertisement';
-import { Barrage, drawBarrages } from './Barrages';
+import {  drawBarrages, useAddBarrage } from './Barrages';
 
 interface IMarqueeCanvasProps {
   videoRef: React.RefObject<HTMLVideoElement>;
@@ -33,23 +33,9 @@ const CanvasContainer: React.FC<IMarqueeCanvasProps> = ({
   isFullScreen = false,
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [barrages, setBarrages] = useState<Barrage[]>([]);
   const [inputValue, setInputValue] = useState<string>('');
-
-  const addBarrage = (barrageText: string, color = 'red') => {
-    console.log('barrageText: ', barrageText);
-    setBarrages((prevBarrages) => [
-      ...prevBarrages,
-      {
-        barrageText,
-        x: canvasRef.current?.width || 0,
-        y: Math.random() * (canvasRef.current?.height || 0),
-        speed,
-        color,
-        fontSize,
-      },
-    ]);
-  };
+  const { barrages, addBarrage } = useAddBarrage({ canvasRef,
+    speed: 2 });
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -100,7 +86,6 @@ const CanvasContainer: React.FC<IMarqueeCanvasProps> = ({
       container.removeEventListener('resize', updateCanvasSize);
     };
   }, [barrages, videoRef, containerRef, text, speed, fontSize, fontColor, backgroundColor, adText, adWidth, adHeight, isExpanded]);
-
 
   return (
     <>

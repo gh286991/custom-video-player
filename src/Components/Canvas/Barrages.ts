@@ -1,4 +1,10 @@
-export interface Barrage {
+import { useState } from 'react';
+
+type AddBarrageProps = {
+  canvasRef: React.RefObject<HTMLCanvasElement>;
+  speed: number;
+};
+export interface IBarrage {
   barrageText: string;
   x: number;
   y: number;
@@ -7,7 +13,7 @@ export interface Barrage {
   fontSize: number;
 }
 
-export   const drawBarrages = (ctx:CanvasRenderingContext2D, barrages:Barrage[] ) => {
+export const drawBarrages = (ctx:CanvasRenderingContext2D, barrages:IBarrage[] ) => {
   barrages.forEach((barrage, index) => {
     ctx.font = `${barrage.fontSize}px`;
     ctx.fillStyle = barrage.color;
@@ -21,4 +27,26 @@ export   const drawBarrages = (ctx:CanvasRenderingContext2D, barrages:Barrage[] 
       barrages.splice(index, 1);
     }
   });
+};
+
+export const useAddBarrage = ({ canvasRef, speed }: AddBarrageProps) => {
+  const [barrages, setBarrages] = useState<IBarrage[]>([]);
+
+  const addBarrage = (barrageText: string, color = 'red') => {
+    setBarrages((prevBarrages) => [
+      ...prevBarrages,
+      {
+        barrageText,
+        x: canvasRef.current?.width || 0,
+        y: Math.random() * (canvasRef.current?.height || 0),
+        speed,
+        color,
+        fontSize: 20,
+      },
+    ]);
+  };
+  return { 
+    barrages,
+    addBarrage,
+  };
 };
