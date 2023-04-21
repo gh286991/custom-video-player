@@ -36,16 +36,16 @@ const CanvasContainer: React.FC<IMarqueeCanvasProps> = ({
   const [inputValue, setInputValue] = useState<string>('');
   const { barrages, addBarrage } = useAddBarrage({ canvasRef,
     speed: 2 });
-
+    
   useEffect(() => {
     const canvas = canvasRef.current;
     const video = videoRef.current;
     const container = containerRef.current;
     if (!canvas || !video || !container) return;
-    
+  
     canvas.width = container.clientWidth;
     canvas.height = container.clientHeight;
-
+  
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
@@ -54,20 +54,19 @@ const CanvasContainer: React.FC<IMarqueeCanvasProps> = ({
       canvas.height = container.clientHeight;
     };
 
-    let requestID: number;
     let x = canvas.width;
-
+    let requestID: number;
     const draw = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       ctx.fillStyle = backgroundColor;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      x = drawMarquee(ctx, x, text, fontSize, fontColor, speed);
+      x = drawMarquee(ctx, x, 30, 'Test123', fontSize, fontColor, speed);
+      
       if (x < -ctx.measureText(text).width) {
         x = canvas.width;
       }
-    
       drawAdvertisement(ctx, adText, adWidth, adHeight);
       drawBarrages(ctx, barrages);
       requestID = requestAnimationFrame(draw);
@@ -76,17 +75,29 @@ const CanvasContainer: React.FC<IMarqueeCanvasProps> = ({
     draw();
 
     updateCanvasSize();
-
+  
     window.addEventListener('resize', updateCanvasSize);
     container.addEventListener('resize', updateCanvasSize);
-
+  
     return () => {
       cancelAnimationFrame(requestID);
       window.removeEventListener('resize', updateCanvasSize);
       container.removeEventListener('resize', updateCanvasSize);
     };
-  }, [barrages, videoRef, containerRef, text, speed, fontSize, fontColor, backgroundColor, adText, adWidth, adHeight, isExpanded]);
-
+  }, [
+    barrages,
+    videoRef,
+    containerRef,
+    text,
+    speed,
+    fontSize,
+    fontColor,
+    backgroundColor,
+    adText,
+    adWidth,
+    adHeight,
+    isExpanded,
+  ]);
   return (
     <>
       <canvas ref={canvasRef}
