@@ -69,6 +69,7 @@ const CanvasContainer: React.FC<IMarqueeCanvasProps> = ({
           left: '0px',
           pointerEvents: 'none' }}
       />
+
       <input
         style={{ position: 'absolute',
           zIndex: 2,

@@ -1,11 +1,10 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { IBarrage } from '../Modules/Barrages';
 
 import { drawBarrages, 
   drawAdvertisement,
   drawMarquee,
-  drawBoxWithText,
-  drawButton } from '../Modules';
+} from '../Modules';
 
 type UseDrawProps = {
   barrages: IBarrage[];
@@ -41,7 +40,6 @@ const useDrawCanvas = ({
   ctx,
 }: UseDrawProps) => {
   const marqueeXRef = useRef(0);
-  const [isBoxVisible, setIsBoxVisible] = useState(true);
 
   useEffect(() => {
     if (!canvas || !video || !container) return;
@@ -57,11 +55,6 @@ const useDrawCanvas = ({
         fontSize, fontColor, speed);
       drawAdvertisement(ctx, adText, adWidth, adHeight);
       drawBarrages(ctx, barrages);
-            
-      if (isBoxVisible) {
-        drawBoxWithText(ctx, canvas, '您的文本'); // 调用绘制方框的函数
-        drawButton( ctx, canvas.width / 2 - 50, canvas.height / 2 + 20, 100, 30, '确定');
-      }
       
       requestID = requestAnimationFrame(draw);
     };
@@ -74,42 +67,8 @@ const useDrawCanvas = ({
   }, [barrages, canvas, video, 
     container, text, speed, fontSize, 
     fontColor, backgroundColor, adText, 
-    adWidth, adHeight, isExpanded, isBoxVisible, ctx,
+    adWidth, adHeight, isExpanded, ctx,
   ]);
-    
-  useEffect(() => {
-    if (!container) return;
-        
-    const handleClick = (event: MouseEvent) => {
-      if (!canvas) return;
-      const mouseX = event.clientX - canvas.getBoundingClientRect().left;
-      const mouseY = event.clientY - canvas.getBoundingClientRect().top;
-    
-      const buttonX = canvas.width / 2 - 50;
-      const buttonY = canvas.height / 2 + 20;
-      const buttonWidth = 100;
-      const buttonHeight = 30;
-
-      const toggleBoxVisibility = () => {
-        setIsBoxVisible(false);
-      };
-
-      if (
-        mouseX >= buttonX &&
-        mouseX <= buttonX + buttonWidth &&
-        mouseY >= buttonY &&
-        mouseY <= buttonY + buttonHeight
-      ) {
-        toggleBoxVisibility();
-      }
-    };
-    
-    container.addEventListener('click', handleClick);
-    
-    return () => {
-      container.removeEventListener('click', handleClick);
-    };
-  }, [container, canvas, isBoxVisible]);
   
 };
       
