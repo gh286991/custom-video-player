@@ -37,19 +37,21 @@ const HLSPlayer: React.FC<IHLSPlayerProps> = ({ src }) => {
   }, [src]);
 
   useEffect(() => {
+    const currentVideoRef = videoRef.current;
+  
     const handleTimeUpdate = () => {
-      if (videoRef.current) {
-        const progresss = (videoRef.current.currentTime / videoRef.current.duration) * 100;
-        setProgress(progresss);
+      if (currentVideoRef) {
+        const progressBar = (currentVideoRef.currentTime / currentVideoRef.duration) * 100;
+        setProgress(progressBar);
       }
     };
-
-    videoRef.current?.addEventListener('timeupdate', handleTimeUpdate);
-
+  
+    currentVideoRef?.addEventListener('timeupdate', handleTimeUpdate);
+  
     return () => {
-      videoRef.current?.removeEventListener('timeupdate', handleTimeUpdate);
+      currentVideoRef?.removeEventListener('timeupdate', handleTimeUpdate);
     };
-  }, []);
+  }, [videoRef]);
 
   const containerStyle : React.CSSProperties = isExpanded
     ? { position: 'fixed',
