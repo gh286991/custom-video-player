@@ -1,6 +1,6 @@
 import React from 'react';
 import HLSPlayer from './Components/HLSPlayer';
-import { getVimeoHLSUrl } from './Components/getVimeo';
+import { getVimeoHLSUrl } from './Components/utils/getVimeo';
 
 const App: React.FC = () => {
 

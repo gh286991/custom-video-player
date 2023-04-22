@@ -2,10 +2,12 @@ import React, { useEffect, useRef, useState } from 'react';
 import Hls from 'hls.js';
 import CanvasContainer from './Canvas';
 import Controls from './Controls';
-
+import Dialog from './Dialog';
 interface IHLSPlayerProps {
   src: string;
 }
+
+const showDiaLogTime = 2;
 
 const HLSPlayer: React.FC<IHLSPlayerProps> = ({ src }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -14,6 +16,8 @@ const HLSPlayer: React.FC<IHLSPlayerProps> = ({ src }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const [isFullScreen, setIsFullScreen] = useState(false);
+
+  const [ isDialogVisible, setIsDialogVisible ] = useState<boolean>(false);
 
   useEffect(() => {
     if (videoRef.current) {
@@ -37,19 +41,29 @@ const HLSPlayer: React.FC<IHLSPlayerProps> = ({ src }) => {
   }, [src]);
 
   useEffect(() => {
+    const currentVideoRef = videoRef.current;
+  
     const handleTimeUpdate = () => {
-      if (videoRef.current) {
-        const progresss = (videoRef.current.currentTime / videoRef.current.duration) * 100;
-        setProgress(progresss);
+      if (currentVideoRef) {
+        const progressBar = (currentVideoRef.currentTime / currentVideoRef.duration) * 100;
+    
+        setProgress(progressBar);
+
+        // 檢查是否剛好播放了 10 秒
+        if (Math.floor(currentVideoRef.currentTime) === showDiaLogTime) {
+          console.log(`視頻剛好播放了 ${showDiaLogTime} 秒`);
+          // 在這裡執行您想在 10 秒時執行的操作
+          setIsDialogVisible(true);
+        }
       }
     };
-
-    videoRef.current?.addEventListener('timeupdate', handleTimeUpdate);
-
+  
+    currentVideoRef?.addEventListener('timeupdate', handleTimeUpdate);
+  
     return () => {
-      videoRef.current?.removeEventListener('timeupdate', handleTimeUpdate);
+      currentVideoRef?.removeEventListener('timeupdate', handleTimeUpdate);
     };
-  }, []);
+  }, [videoRef]);
 
   const containerStyle : React.CSSProperties = isExpanded
     ? { position: 'fixed',
@@ -94,6 +108,13 @@ const HLSPlayer: React.FC<IHLSPlayerProps> = ({ src }) => {
         isFullScreen={isFullScreen}
         text={'test343'}
       />
+      {isDialogVisible && (
+        <Dialog
+          boxWidth={200}
+          boxHeight={100}
+          setIsDialogVisible={setIsDialogVisible}
+        />
+      )}
       <Controls
         videoRef={videoRef}
         isPlaying={isPlaying}
