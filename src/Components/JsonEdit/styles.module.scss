@@ -1,0 +1,21 @@
+.invalid {
+    border: 1px solid red;
+
+    &::placeholder {
+        color: red;
+    }
+
+    &:focus {
+        border: 1px solid red;
+        border-color: red;
+        box-shadow: 0 0 3px red;
+        color: red;
+        outline-color: red;
+    }
+}
+
+
+
+.textarea {
+    resize: none;
+}
