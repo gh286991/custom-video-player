@@ -59,6 +59,7 @@ const HLSPlayer: React.FC<IHLSPlayerProps> = ({ src, marqueeText, marqueeConfig 
         height="100%"
         controls
         data-testid='video-element'
+        playsInline
         src={src}
       >
         <source type="application/x-mpegURL" />
