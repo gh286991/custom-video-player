@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Hls from 'hls.js';
-import CanvasContainer from './Canvas';
+import CanvasContainer from '../Modules/Canvas';
 import Controls from './Controls';
 import Dialog from './Dialog';
 interface IHLSPlayerProps {

@@ -1,6 +1,6 @@
 import { renderHook, act } from '@testing-library/react-hooks';
 import { fireEvent } from '@testing-library/react';
-import useUpdateCanvasSize from '../../Components/Canvas/Hooks/useUpdateCanvasSize';
+import useUpdateCanvasSize from '../../Modules/Canvas/Hooks/useUpdateCanvasSize';
 
 describe('useUpdateCanvasSize', () => {
   let container: HTMLElement;
