@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import HLSPlayer from './Components/HLSPlayer';
-import JSONTextArea from './Components/JsonEdit';
+import JSONTextArea from './Modules/JsonEdit';
 import { IJSONObject } from './types/types';
 interface IConfig extends IJSONObject  {
   text: string,
@@ -19,7 +19,6 @@ const App: React.FC = () => {
 
   return (
     <div>
-     
       <h1>
         Hello, React 18 with Webpack and TypeScript!
       </h1>
