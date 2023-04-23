@@ -1,8 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react';
-import Hls from 'hls.js';
+import React, { useRef, useState } from 'react';
+
 import CanvasContainer from '../Canvas';
 import Controls from './Controls';
 import Dialog from '../../Components/Dialog';
+import { useVideoTimeUpdate, useHLSPlayerSetup } from './hooks';
+
 interface IHLSPlayerProps {
   src: string;
   marqueeText?: string;
@@ -20,51 +22,9 @@ const HLSPlayer: React.FC<IHLSPlayerProps> = ({ src, marqueeText }) => {
 
   const [ isDialogVisible, setIsDialogVisible ] = useState<boolean>(false);
 
-  useEffect(() => {
-    if (videoRef.current) {
-      if (Hls.isSupported()) {
-        const hls = new Hls();
-        hls.loadSource(src);
-        hls.attachMedia(videoRef.current);
-        hls.on(Hls.Events.MANIFEST_PARSED, () => {
-          videoRef.current?.play();
-        });
-        return () => {
-          hls.destroy();
-        };
-      } if (videoRef.current.canPlayType('application/vnd.apple.mpegurl')) {
-        videoRef.current.src = src;
-        videoRef.current.addEventListener('loadedmetadata', () => {
-          videoRef.current?.play();
-        });
-      }
-    }
-  }, [src]);
+  useHLSPlayerSetup(videoRef, src);
 
-  useEffect(() => {
-    const currentVideoRef = videoRef.current;
-  
-    const handleTimeUpdate = () => {
-      if (currentVideoRef) {
-        const progressBar = (currentVideoRef.currentTime / currentVideoRef.duration) * 100;
-    
-        setProgress(progressBar);
-
-        // 檢查是否剛好播放了 10 秒
-        if (Math.floor(currentVideoRef.currentTime) === showDiaLogTime) {
-          console.log(`視頻剛好播放了 ${showDiaLogTime} 秒`);
-          // 在這裡執行您想在 10 秒時執行的操作
-          setIsDialogVisible(true);
-        }
-      }
-    };
-  
-    currentVideoRef?.addEventListener('timeupdate', handleTimeUpdate);
-  
-    return () => {
-      currentVideoRef?.removeEventListener('timeupdate', handleTimeUpdate);
-    };
-  }, [videoRef]);
+  useVideoTimeUpdate(videoRef, showDiaLogTime, setIsDialogVisible, setProgress);
 
   const containerStyle : React.CSSProperties = isExpanded
     ? { position: 'fixed',
