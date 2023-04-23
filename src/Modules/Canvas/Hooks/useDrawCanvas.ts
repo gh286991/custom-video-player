@@ -5,6 +5,7 @@ import { drawBarrages,
   drawAdvertisement,
   drawMarquee,
 } from '../Modules';
+import { IMarqueeConfig } from '../Modules/Marquee';
 
 type UseDrawProps = {
   barrages: IBarrage[];
@@ -21,6 +22,7 @@ type UseDrawProps = {
   adHeight: number;
   isExpanded: boolean;
   ctx: CanvasRenderingContext2D | null | undefined;
+  marqueeConfig: IMarqueeConfig
 };
 
 const useDrawCanvas = ({
@@ -38,6 +40,7 @@ const useDrawCanvas = ({
   adHeight,
   isExpanded,
   ctx,
+  marqueeConfig,
 }: UseDrawProps) => {
   const marqueeXRef = useRef(0);
 
@@ -51,8 +54,7 @@ const useDrawCanvas = ({
       ctx.fillStyle = backgroundColor;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      marqueeXRef.current = drawMarquee(ctx, marqueeXRef.current, 30, text,
-        fontSize, fontColor, speed);
+      marqueeXRef.current = drawMarquee(ctx, marqueeXRef.current, marqueeConfig);
       drawAdvertisement(ctx, adText, adWidth, adHeight);
       drawBarrages(ctx, barrages);
       
@@ -64,11 +66,8 @@ const useDrawCanvas = ({
     return () => {
       cancelAnimationFrame(requestID);
     };
-  }, [barrages, canvas, video, 
-    container, text, speed, fontSize, 
-    fontColor, backgroundColor, adText, 
-    adWidth, adHeight, isExpanded, ctx,
-  ]);
+  }, [barrages, canvas, video, container, text, speed, fontSize, fontColor,
+    backgroundColor, adText, adWidth, adHeight, isExpanded, ctx, marqueeConfig]);
   
 };
       

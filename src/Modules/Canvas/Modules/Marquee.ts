@@ -1,23 +1,32 @@
-export type IDrawMarquee = (
-  ctx: CanvasRenderingContext2D,
-  x: number,
+import { IJSONObject } from '../../../types/types';
+export interface IMarqueeConfig extends IJSONObject  {
   y: number,
   text: string,
   fontSize: number,
   fontColor: string,
   speed: number
+}
+
+export type IDrawMarquee = (
+  ctx: CanvasRenderingContext2D,
+  x: number,
+  marqueeConfig: IMarqueeConfig
 ) => number;
 
 export const drawMarquee: IDrawMarquee = (
   ctx,
   x,
-  y,
-  text,
-  fontSize,
-  fontColor,
-  speed,
+  marqueeConfig,
+
 ) => {
-  ctx.font = `${fontSize}px`;
+  const {   
+    y,
+    text,
+    fontSize,
+    fontColor,
+    speed } = marqueeConfig;
+
+  ctx.font = `${fontSize}px Arial`;
   ctx.fillStyle = fontColor;
   ctx.fillText(text, x, y);
 

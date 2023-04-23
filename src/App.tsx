@@ -1,20 +1,16 @@
 import React, { useState } from 'react';
 import HLSPlayer from './Modules/VideoPlayer/HLSPlayer';
 import JSONTextArea from './Modules/JsonEdit';
-import { IJSONObject } from './types/types';
-interface IConfig extends IJSONObject  {
-  text: string,
-}
-const config : IConfig = {
-  text: 'test' };
-     
+import { IMarqueeConfig } from './Modules/Canvas/Modules';
+import marqueeConfig from './config/marquee.json';
+import RotatingArrow from './Components/RotatingArrow';
+
 const App: React.FC = () => {
 
-  const [inputValue, setInputValue] = useState<IConfig>(config);
+  const [inputValue, setInputValue] = useState<IMarqueeConfig>(marqueeConfig);
 
-  const handleInputChange = (newValue: IConfig) => {
+  const handleInputChange = (newValue: IMarqueeConfig) => {
     setInputValue(newValue);
-    // 在這裡，您可以根據需要處理有效性
   };
 
   return (
@@ -26,11 +22,16 @@ const App: React.FC = () => {
         <HLSPlayer  
           src="https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"
           marqueeText={inputValue.text}
+          marqueeConfig={inputValue}
         />
-        <JSONTextArea<IConfig>
-          value={inputValue}
-          onChange={handleInputChange}
-        />
+        <div>
+          <h3>跑馬燈編輯器</h3> 
+          <RotatingArrow></RotatingArrow>
+          <JSONTextArea<IMarqueeConfig>
+            value={inputValue}
+            onChange={handleInputChange}
+          />
+        </div>
       </div>
     </div>
   );

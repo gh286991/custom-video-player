@@ -2,6 +2,7 @@ import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import HLSPlayer from '../Modules/VideoPlayer/HLSPlayer';
+import marqueeConfig from '../config/marquee.json';
 import Hls from 'hls.js';
 
 const mockedHls = {
@@ -21,7 +22,10 @@ describe('HLSPlayer', () => {
   const testSrc = 'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8';
 
   it('should render video element with controls', () => {
-    const { getByTestId } = render(<HLSPlayer src={testSrc} />);
+    const { getByTestId } = render(<HLSPlayer 
+      src={testSrc}
+      marqueeConfig={marqueeConfig}
+    />);
     const videoElement = getByTestId('video-element');
 
     expect(videoElement).toBeInTheDocument();
@@ -31,7 +35,10 @@ describe('HLSPlayer', () => {
   });
 
   it('should handle HLS playback', async () => {
-    const { getByTestId } = render(<HLSPlayer src={testSrc} />);
+    const { getByTestId } = render(<HLSPlayer 
+      src={testSrc}
+      marqueeConfig={marqueeConfig}
+    />);
     const videoElement = getByTestId('video-element');
 
     fireEvent.loadedMetadata(videoElement);

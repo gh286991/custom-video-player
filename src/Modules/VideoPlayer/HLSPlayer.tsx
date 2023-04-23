@@ -4,15 +4,17 @@ import CanvasContainer from '../Canvas';
 import Controls from './Controls';
 import Dialog from '../../Components/Dialog';
 import { useVideoTimeUpdate, useHLSPlayerSetup } from './hooks';
+import { IMarqueeConfig } from '../Canvas/Modules';
 
 interface IHLSPlayerProps {
   src: string;
   marqueeText?: string;
+  marqueeConfig: IMarqueeConfig
 }
 
 const showDiaLogTime = 2;
 
-const HLSPlayer: React.FC<IHLSPlayerProps> = ({ src, marqueeText }) => {
+const HLSPlayer: React.FC<IHLSPlayerProps> = ({ src, marqueeText, marqueeConfig }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [progress, setProgress] = useState(0);
@@ -68,6 +70,7 @@ const HLSPlayer: React.FC<IHLSPlayerProps> = ({ src, marqueeText }) => {
         videoRef={videoRef}
         isFullScreen={isFullScreen}
         text={marqueeText || ''}
+        marqueeConfig={marqueeConfig}
       />
       {isDialogVisible && (
         <Dialog

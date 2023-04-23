@@ -1,7 +1,4 @@
-declare module '*.svg' {
-  const content: any;
-  export default content;
-}
+import { IJSONObject } from '../src/types/types';
 
 declare module '*.jpg' {
   const content: string;
@@ -14,7 +11,7 @@ declare module '*.png' {
 }
 
 declare module '*.json' {
-  const content: string;
+  const content: IJSONObject;
   export default content;
 }
 

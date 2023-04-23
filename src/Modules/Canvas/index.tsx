@@ -3,7 +3,7 @@ import useUpdateCanvasSize from './Hooks/useUpdateCanvasSize';
 import useDrawCanvas from './Hooks/useDrawCanvas';
 
 import { useAddBarrage } from './Modules';
-
+import { IMarqueeConfig } from './Modules';
 interface IMarqueeCanvasProps {
   videoRef: React.RefObject<HTMLVideoElement>;
   containerRef: React.RefObject<HTMLDivElement>;
@@ -17,6 +17,7 @@ interface IMarqueeCanvasProps {
   adHeight?: number;
   isExpanded?: boolean;
   isFullScreen?: boolean;
+  marqueeConfig: IMarqueeConfig
 }
 
 const CanvasContainer: React.FC<IMarqueeCanvasProps> = ({
@@ -31,6 +32,7 @@ const CanvasContainer: React.FC<IMarqueeCanvasProps> = ({
   adWidth = 150,
   adHeight = 50,
   isExpanded = false,
+  marqueeConfig,
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [inputValue, setInputValue] = useState<string>('');
@@ -58,6 +60,7 @@ const CanvasContainer: React.FC<IMarqueeCanvasProps> = ({
     adHeight,
     isExpanded,
     ctx,
+    marqueeConfig,
   });
   
   return (
