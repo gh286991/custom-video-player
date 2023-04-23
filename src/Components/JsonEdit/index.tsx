@@ -34,6 +34,7 @@ const JSONTextArea = <T extends IJSONObject>(props: JSONTextAreaProps<T>): React
     if (isValidJSON) {
       const parsedJSON = JSON.parse(event.target.value);
       onChange(parsedJSON);
+      setEditValue(JSON.stringify(parsedJSON, null, 2));
     }
   };
 

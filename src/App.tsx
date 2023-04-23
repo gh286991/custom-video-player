@@ -26,6 +26,7 @@ const App: React.FC = () => {
       <div className='container'>
         <HLSPlayer  
           src="https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"
+          marqueeText={inputValue.text}
         />
         <JSONTextArea<IConfig>
           value={inputValue}

@@ -5,11 +5,12 @@ import Controls from './Controls';
 import Dialog from './Dialog';
 interface IHLSPlayerProps {
   src: string;
+  marqueeText?: string;
 }
 
 const showDiaLogTime = 2;
 
-const HLSPlayer: React.FC<IHLSPlayerProps> = ({ src }) => {
+const HLSPlayer: React.FC<IHLSPlayerProps> = ({ src, marqueeText }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [progress, setProgress] = useState(0);
@@ -106,7 +107,7 @@ const HLSPlayer: React.FC<IHLSPlayerProps> = ({ src }) => {
         isExpanded={isExpanded}
         videoRef={videoRef}
         isFullScreen={isFullScreen}
-        text={'test343'}
+        text={marqueeText || ''}
       />
       {isDialogVisible && (
         <Dialog
