@@ -8,9 +8,15 @@ import RotatingArrow from './Components/RotatingArrow';
 const App: React.FC = () => {
 
   const [inputValue, setInputValue] = useState<IMarqueeConfig>(marqueeConfig);
-
+  const [isCollapsed, setIsCollapsed] = useState(false);
   const handleInputChange = (newValue: IMarqueeConfig) => {
     setInputValue(newValue);
+  };
+
+  const handleClick = () => {
+    setTimeout(()=>{
+      setIsCollapsed(!isCollapsed);
+    }, 200);
   };
 
   return (
@@ -25,12 +31,22 @@ const App: React.FC = () => {
           marqueeConfig={inputValue}
         />
         <div>
-          <h3>跑馬燈編輯器</h3> 
-          <RotatingArrow></RotatingArrow>
-          <JSONTextArea<IMarqueeConfig>
-            value={inputValue}
-            onChange={handleInputChange}
-          />
+          <div  className='titleContainer'>
+            <h3>跑馬燈編輯器</h3> 
+            <RotatingArrow onClick={handleClick}></RotatingArrow>
+          </div>
+          {
+            !isCollapsed &&   <div
+              className={`rotating-arrow-container ${
+                isCollapsed ? 'collapsed' : ''
+              }`}
+            >
+              <JSONTextArea<IMarqueeConfig>
+                value={inputValue}
+                onChange={handleInputChange}
+              />
+            </div>
+          }
         </div>
       </div>
     </div>
