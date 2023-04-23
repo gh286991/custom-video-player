@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import HLSPlayer from '../Components/HLSPlayer';
+import HLSPlayer from '../Modules/VideoPlayer/HLSPlayer';
 import Hls from 'hls.js';
 
 const mockedHls = {

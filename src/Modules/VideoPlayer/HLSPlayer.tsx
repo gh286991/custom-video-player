@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Hls from 'hls.js';
-import CanvasContainer from '../Modules/Canvas';
+import CanvasContainer from '../Canvas';
 import Controls from './Controls';
-import Dialog from './Dialog';
+import Dialog from '../../Components/Dialog';
 interface IHLSPlayerProps {
   src: string;
   marqueeText?: string;

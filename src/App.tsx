@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import HLSPlayer from './Components/HLSPlayer';
+import HLSPlayer from './Modules/VideoPlayer/HLSPlayer';
 import JSONTextArea from './Modules/JsonEdit';
 import { IJSONObject } from './types/types';
 interface IConfig extends IJSONObject  {
@@ -31,9 +31,7 @@ const App: React.FC = () => {
           value={inputValue}
           onChange={handleInputChange}
         />
-        
       </div>
-     
     </div>
   );
 };
