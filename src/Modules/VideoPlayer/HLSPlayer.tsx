@@ -39,16 +39,6 @@ const HLSPlayer: React.FC<IHLSPlayerProps> = ({ src, marqueeText, marqueeConfig 
       width: '640px',
       height: '480px' } ;
 
-  const toggleFullscreen = () => {
-    if (containerRef.current) {
-      if (!document.fullscreenElement) {
-        containerRef.current.requestFullscreen();
-      } else {
-        document.exitFullscreen();
-      }
-    }
-  };
-
   return (
     <div  
       ref={containerRef}
@@ -81,6 +71,7 @@ const HLSPlayer: React.FC<IHLSPlayerProps> = ({ src, marqueeText, marqueeConfig 
         />
       )}
       <Controls
+        containerRef={containerRef}
         videoRef={videoRef}
         isPlaying={isPlaying}
         setIsPlaying={setIsPlaying}
@@ -90,17 +81,6 @@ const HLSPlayer: React.FC<IHLSPlayerProps> = ({ src, marqueeText, marqueeConfig 
         progress={progress}
         setIsFullScreen={setIsFullScreen}
       />
-      <button 
-        style={{
-          position: 'absolute',
-          bottom: '-100px',
-          right:'10px',
-        }} 
-        onClick={toggleFullscreen}
-      >
-        Toggle Fullscreen
-      </button>
-
     </div>
   );
 };

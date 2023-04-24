@@ -1,9 +1,10 @@
 import React from 'react';
 import ProgressBar from './ProgressBar';
 import PlayButton from './PlayButton';
-
+import FullScreenButton from './FullScreenButton';
 interface ControlsProps {
   videoRef: React.RefObject<HTMLVideoElement>;
+  containerRef: React.RefObject<HTMLDivElement>;
   isPlaying: boolean;
   setIsPlaying: React.Dispatch<React.SetStateAction<boolean>>;
   setProgress: React.Dispatch<React.SetStateAction<number>>;
@@ -22,6 +23,7 @@ const Controls: React.FC<ControlsProps> = ({
   isExpanded,
   progress,
   setIsFullScreen,
+  containerRef,
 }: ControlsProps) => {
   const handleProgressClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (videoRef.current) {
@@ -110,6 +112,7 @@ const Controls: React.FC<ControlsProps> = ({
       >
         {isExpanded ? '缩小' : '放大'}
       </button>
+      <FullScreenButton  containerRef={containerRef} />
     </>);
 };
   
