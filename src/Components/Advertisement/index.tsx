@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { ReactComponent as Cross } from '../../Assets/icons/Cross.svg';
 
 import styles from './styles.module.scss';
 
@@ -57,7 +58,9 @@ const AdDialog: React.FC<AdDialogProps> = ({ boxWidth, boxHeight, position, imag
           setIsVisible(false);
         }}
       >
-        關閉
+        <Cross 
+          className={styles.crossIcon}
+        />
       </button>
     </div>
   );

@@ -1,8 +1,8 @@
 import { useEffect, useRef } from 'react';
 import { IBarrage } from '../Modules/Barrages';
 
-import { drawBarrages, 
-  drawAdvertisement,
+import {
+  drawBarrages, 
   drawMarquee,
 } from '../Modules';
 import { IMarqueeConfig } from '../Modules/Marquee';
@@ -55,7 +55,6 @@ const useDrawCanvas = ({
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       marqueeXRef.current = drawMarquee(ctx, marqueeXRef.current, marqueeConfig);
-      drawAdvertisement(ctx, adText, adWidth, adHeight);
       drawBarrages(ctx, barrages);
       
       requestID = requestAnimationFrame(draw);

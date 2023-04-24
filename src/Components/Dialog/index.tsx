@@ -20,7 +20,7 @@ const Dialog: React.FC<DialogProps> = ({ boxWidth, boxHeight, setIsDialogVisible
         height: `${boxHeight}px`,
       }}
     >
-      <p>您的文本</p>
+      <p>文本</p>
       <button
         onClick={() => {
           setIsDialogVisible(false);

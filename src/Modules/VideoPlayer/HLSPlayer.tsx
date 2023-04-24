@@ -74,7 +74,7 @@ const HLSPlayer: React.FC<IHLSPlayerProps> = ({ src, marqueeText, marqueeConfig 
       <Advertisement
         boxWidth={200}
         boxHeight={120}
-        position="top-right"
+        position="top-left"
         imageUrl="https://picsum.photos/200/100"
         text="廣告"
       />
