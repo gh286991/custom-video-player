@@ -25,34 +25,36 @@ declare global {
 
 const FullScreenButton = ({ containerRef }: IFullScreenButton) => {
   const enterFullScreen = (element: HTMLElement) => {
-    if (element.requestFullscreen) {
-      element.requestFullscreen();
-    } else if (element.webkitRequestFullscreen) {
-      element.webkitRequestFullscreen();
-    } else if (element.msRequestFullscreen) {
-      element.msRequestFullscreen();
-    } else if (element.mozRequestFullScreen) {
-      element.mozRequestFullScreen();
-    } else if (element.webkitEnterFullScreen) { // iOS Safari
-      element.webkitEnterFullScreen();
-    }
+    const enterFullScreenFunctions = [
+      () => element.requestFullscreen?.(),
+      () => element.webkitRequestFullscreen?.(),
+      () => element.msRequestFullscreen?.(),
+      () => element.mozRequestFullScreen?.(),
+      () => element.webkitEnterFullScreen?.(),
+    ];
+      
+    enterFullScreenFunctions.find(enterFunction => enterFunction());
   };
-
+      
   const exitFullScreen = () => {
-    if (document.exitFullscreen) {
-      document.exitFullscreen();
-    } else if (document.webkitExitFullscreen) {
-      document.webkitExitFullscreen();
-    } else if (document.msExitFullscreen) {
-      document.msExitFullscreen();
-    } else if (document.mozCancelFullScreen) {
-      document.mozCancelFullScreen();
-    } else if (document.webkitFullscreenElement) {
-      const webkitFullscreenElement = document.webkitFullscreenElement as HTMLElement;
-      if (typeof webkitFullscreenElement.webkitExitFullScreen === 'function') {
-        webkitFullscreenElement.webkitExitFullScreen();
-      }
-    }
+    const exitFullScreenFunctions = [
+      () => document.exitFullscreen?.(),
+      () => document.webkitExitFullscreen?.(),
+      () => document.msExitFullscreen?.(),
+      () => document.mozCancelFullScreen?.(),
+      () => {
+        if (document.webkitFullscreenElement) {
+          const webkitFullscreenElement = document.webkitFullscreenElement as HTMLElement;
+          if (typeof webkitFullscreenElement.webkitExitFullScreen === 'function') {
+            webkitFullscreenElement.webkitExitFullScreen();
+            return true;
+          }
+        }
+        return false;
+      },
+    ];
+      
+    exitFullScreenFunctions.find(exitFunction => exitFunction());
   };
 
   const toggleFullscreen = () => {
