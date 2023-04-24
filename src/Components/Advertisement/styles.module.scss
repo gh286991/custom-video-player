@@ -1,0 +1,37 @@
+.adDialog {
+    position: absolute;
+    z-index: 3;
+    background-color: white;
+    border: 1px solid black;
+    padding: 10px;
+
+    &>div {
+        width: 90%;
+        height: 90%;
+
+        &>img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+    }
+
+    &>p {
+        margin: 0px;
+    }
+}
+
+.closeButton {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    font-size: 12px;
+    line-height: 18px;
+    text-align: center;
+    cursor: pointer;
+}

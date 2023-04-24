@@ -3,6 +3,7 @@ import React, { useRef, useState } from 'react';
 import CanvasContainer from '../Canvas';
 import Controls from './Controls';
 import Dialog from '../../Components/Dialog';
+import Advertisement from '../../Components/Advertisement';
 import { useVideoTimeUpdate, useHLSPlayerSetup } from './hooks';
 import { IMarqueeConfig } from '../Canvas/Modules';
 
@@ -70,6 +71,13 @@ const HLSPlayer: React.FC<IHLSPlayerProps> = ({ src, marqueeText, marqueeConfig 
           setIsDialogVisible={setIsDialogVisible}
         />
       )}
+      <Advertisement
+        boxWidth={200}
+        boxHeight={120}
+        position="top-right"
+        imageUrl="https://picsum.photos/200/100"
+        text="廣告"
+      />
       <Controls
         containerRef={containerRef}
         videoRef={videoRef}
