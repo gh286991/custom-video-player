@@ -18,43 +18,56 @@ declare global {
     webkitRequestFullscreen?: () => Promise<void>;
     msRequestFullscreen?: () => void;
     mozRequestFullScreen?: () => void;
-    webkitEnterFullScreen?: () => void;
-    webkitExitFullScreen?: () => void;
   }
 }
 
+const enterFullScreenAlternative = (element: HTMLElement) => {
+  element.style.position = 'fixed';
+  element.style.top = '0';
+  element.style.left = '0';
+  element.style.width = '100vw';
+  element.style.height = '100vh';
+  element.style.zIndex = '1000';
+};
+
+const exitFullScreenAlternative = (element: HTMLElement) => {
+  element.style.position = '';
+  element.style.top = '';
+  element.style.left = '';
+  element.style.width = '';
+  element.style.height = '';
+  element.style.zIndex = '';
+};
+  
 const FullScreenButton = ({ containerRef }: IFullScreenButton) => {
   const enterFullScreen = (element: HTMLElement) => {
-    const enterFullScreenFunctions = [
-      () => element.requestFullscreen?.(),
-      () => element.webkitRequestFullscreen?.(),
-      () => element.msRequestFullscreen?.(),
-      () => element.mozRequestFullScreen?.(),
-      () => element.webkitEnterFullScreen?.(),
-    ];
-      
-    enterFullScreenFunctions.find(enterFunction => enterFunction());
+    if (element.requestFullscreen) {
+      element.requestFullscreen();
+    } else if (element.webkitRequestFullscreen) {
+      element.webkitRequestFullscreen();
+    } else if (element.msRequestFullscreen) {
+      element.msRequestFullscreen();
+    } else if (element.mozRequestFullScreen) {
+      element.mozRequestFullScreen();
+    } else {
+      enterFullScreenAlternative(element);
+    }
   };
-      
+
   const exitFullScreen = () => {
-    const exitFullScreenFunctions = [
-      () => document.exitFullscreen?.(),
-      () => document.webkitExitFullscreen?.(),
-      () => document.msExitFullscreen?.(),
-      () => document.mozCancelFullScreen?.(),
-      () => {
-        if (document.webkitFullscreenElement) {
-          const webkitFullscreenElement = document.webkitFullscreenElement as HTMLElement;
-          if (typeof webkitFullscreenElement.webkitExitFullScreen === 'function') {
-            webkitFullscreenElement.webkitExitFullScreen();
-            return true;
-          }
-        }
-        return false;
-      },
-    ];
-      
-    exitFullScreenFunctions.find(exitFunction => exitFunction());
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+    } else if (document.webkitExitFullscreen) {
+      document.webkitExitFullscreen();
+    } else if (document.msExitFullscreen) {
+      document.msExitFullscreen();
+    } else if (document.mozCancelFullScreen) {
+      document.mozCancelFullScreen();
+    } else {
+      if (containerRef.current) {
+        exitFullScreenAlternative(containerRef.current);
+      }
+    }
   };
 
   const toggleFullscreen = () => {
